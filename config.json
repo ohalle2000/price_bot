@@ -1,0 +1,8 @@
+{
+    "websites": {
+        "macbook-marketplaats" : {
+            "url": "https://www.marktplaats.nl/l/computers-en-software/apple-macbooks/",
+            "target": "hz-Link hz-Link--block hz-Listing-coverLink"
+        }
+    }
+}
