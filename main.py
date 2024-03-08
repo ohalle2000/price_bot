@@ -19,15 +19,16 @@ browser = webdriver.Chrome(options=options)
 
 # use without cookies
 def main():
-    for search in ["car-2dehands", "car-marketplaats"]:
-        config = get_website_config(search)
-        base_url = config["url"]
-        target = config["target"]
-        parameters = config["parameters"]
-        max_price = config["max_price"]
+    while True:
+        for search in ["car-marketplaats", "car-2dehands"]:
+            config = get_website_config(search)
+            base_url = config["url"]
+            target = config["target"]
+            parameters = config["parameters"]
+            max_price = config["max_price"]
 
-        urls = expand_link_with_pages(base_url, parameters, 5)
-        while True:
+            urls = expand_link_with_pages(base_url, parameters, 5)
+
             with open("./car-links.txt", "r") as file:
                 links = file.read().splitlines()
 
