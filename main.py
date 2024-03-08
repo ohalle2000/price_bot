@@ -44,7 +44,7 @@ def main():
                 file.write("\n".join(macbook_links))
 
             console.print("[bold blue]Sleeping...[/bold blue]")
-            time.sleep(SLEEP_TIME)
+        time.sleep(SLEEP_TIME)
 
     browser.quit()
 
