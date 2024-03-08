@@ -1,6 +1,9 @@
 import time
 from _utils import *
-from _macbook import macbook_main
+
+# from _macbook import macbook_main
+from _cars import cars_main
+
 from selenium import webdriver
 
 SLEEP_TIME = 5 * 60
@@ -16,27 +19,31 @@ browser = webdriver.Chrome(options=options)
 
 # use without cookies
 def main():
-    mac_book_config = get_website_config("macbook-marketplaats")
-    macbook_base_url = mac_book_config["url"]
-    macbook_target = mac_book_config["target"]
-    macbook_urls = expand_link_with_pages(macbook_base_url)
-    while True:
-        with open("./macbook-links.txt", "r") as file:
-            links = file.read().splitlines()
+    for search in ["car-2dehands", "car-marketplaats"]:
+        config = get_website_config(search)
+        base_url = config["url"]
+        target = config["target"]
+        parameters = config["parameters"]
+        max_price = config["max_price"]
 
-        macbook_links = macbook_main(browser, macbook_urls, macbook_target, links)
+        urls = expand_link_with_pages(base_url, parameters, 5)
+        while True:
+            with open("./car-links.txt", "r") as file:
+                links = file.read().splitlines()
 
-        # Sort links alphabetically
-        macbook_links.sort(key=custom_sort)
+            macbook_links = cars_main(browser, urls, base_url, target, max_price, links)
 
-        # Limit to the last 50 links
-        # existing_links = existing_links[-50:]
+            # Sort links alphabetically
+            macbook_links.sort(key=custom_sort)
 
-        with open("./macbook-links.txt", "w") as file:
-            file.write("\n".join(macbook_links))
+            # Limit to the last 50 links
+            # existing_links = existing_links[-50:]
 
-        console.print("[bold blue]Sleeping...[/bold blue]")
-        time.sleep(SLEEP_TIME)
+            with open("./car-links.txt", "w") as file:
+                file.write("\n".join(macbook_links))
+
+            console.print("[bold blue]Sleeping...[/bold blue]")
+            time.sleep(SLEEP_TIME)
 
     browser.quit()
 

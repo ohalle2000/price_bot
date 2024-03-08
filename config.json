@@ -2,7 +2,21 @@
     "websites": {
         "macbook-marketplaats" : {
             "url": "https://www.marktplaats.nl/l/computers-en-software/apple-macbooks/",
-            "target": "hz-Link hz-Link--block hz-Listing-coverLink"
+            "target": "hz-Link hz-Link--block hz-Listing-coverLink",
+            "parameters": "q:m1|f:12987|sortBy:SORT_INDEX|sortOrder:DECREASING",
+            "max_price": 150
+        },
+        "car-marketplaats" : {
+            "url": "https://www.marktplaats.nl/l/auto-s/",
+            "target": "hz-Link hz-Link--block hz-Listing-coverLink",
+            "parameters": "#f:10898,10882|sortBy:SORT_INDEX|sortOrder:DECREASING",
+            "max_price": 5000
+        },
+        "car-2dehands" : {
+            "url": "https://www.2dehands.be/l/auto-s/",
+            "target": "hz-Link hz-Link--block hz-Listing-coverLink",
+            "parameters": "#f:10898,10882|sortBy:SORT_INDEX|sortOrder:DECREASING",
+            "max_price": 5000
         }
     }
 }

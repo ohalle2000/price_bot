@@ -8,9 +8,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 
 
-def extract_links_from_macbook_response(
-    html_content: str, target_class: str
-) -> List[str]:
+def extract_links_from_macbook_response(html_content: str, target_class: str) -> List[str]:
     soup = BeautifulSoup(html_content, "html.parser")
     elements = soup.find_all("a", class_=target_class)
 
@@ -23,12 +21,8 @@ def extract_links_from_macbook_response(
         link_parts = [
             f"https://www.marktplaats.nl{href}",
             element.find("img").get("title", "").strip(),
-            element.find(
-                "p", class_="hz-Listing-description hz-text-paragraph"
-            ).get_text(strip=True),
-            element.find("div", class_="hz-Listing-group--price-date-feature").get_text(
-                strip=True
-            ),
+            element.find("p", class_="hz-Listing-description hz-text-paragraph").get_text(strip=True),
+            element.find("div", class_="hz-Listing-group--price-date-feature").get_text(strip=True),
         ]
 
         links.append(" ".join(part for part in link_parts if part))
@@ -36,9 +30,7 @@ def extract_links_from_macbook_response(
     return links
 
 
-def macbook_main(
-    driver: webdriver.Chrome, urls: List[str], target: str, links: List[str]
-) -> List[str]:
+def macbook_main(driver: webdriver.Chrome, urls: List[str], target: str, links: List[str]) -> List[str]:
     for idx, url in enumerate(urls):
         try:
             driver.get(url)

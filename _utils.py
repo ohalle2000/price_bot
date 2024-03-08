@@ -18,13 +18,11 @@ def send_telegram_message(bot_token: str, admin_id: int, message: str):
     return response.json()
 
 
-def expand_link_with_pages(link: str) -> list:
+def expand_link_with_pages(link: str, test_to_expand: str, number_of_pages: int) -> list:
     links = []
-    links.append(link + "#q:m1|f:12987|sortBy:SORT_INDEX|sortOrder:DECREASING")
-    for i in range(1, 4):
-        result_link = (
-            link + f"p/{i}/" + "#q:m1|f:12987|sortBy:SORT_INDEX|sortOrder:DECREASING"
-        )
+    links.append(link + test_to_expand)
+    for i in range(1, number_of_pages + 1):
+        result_link = link + f"p/{i}/" + test_to_expand
         links.append(result_link)
     return links
 
