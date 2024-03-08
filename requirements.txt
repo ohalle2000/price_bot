@@ -1,0 +1,8 @@
+requests
+rich
+bs4
+lxml
+pycookiecheat
+robotexclusionrulesparser
+python-dotenv
+selenium
