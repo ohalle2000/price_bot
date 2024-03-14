@@ -11,7 +11,7 @@ requests = "^2.31.0"
 rich = "^13.6.0"
 python-dotenv = "^1.0.0"
 deep-translator = "^1.11.4"
-markdown2 = "^2.4.13"
+geopy = "^2.4.1"
 
 
 [build-system]
