@@ -11,7 +11,8 @@ from _secrets import BOT_TOKEN, ADMIN_ID
 # Constants
 SLEEP_TIME = 60
 LIMIT = 100
-CONFIG_SOURCE = "cars-2dehands"
+CONFIG_SOURCE1 = "cars-2dehands"
+CONFIG_SOURCE2 = "cars-marktplaats"
 
 NIJMEGEN = (51.8433, 5.8609)
 LEUVEN = (50.8823, 4.7138)
@@ -28,12 +29,6 @@ def translate_to_english(text):
 def calculate_driving_distance(origin: tuple, destination: tuple):
     distance = geodesic(origin, destination).kilometers
     return f"{distance:.2f} km"
-
-
-def escape_markdown(text):
-    """Escape special characters for MarkdownV2"""
-    escape_chars = "_*[]()~`>#+-=|{}.!"
-    return "".join(f"\\{char}" if char in escape_chars else char for char in text)
 
 
 def create_bot_message(car: dict, config: dict):
@@ -77,37 +72,47 @@ def create_urls(config: dict, url_number: int = 5, limit: int = 100):
     return urls
 
 
+def check_cars(config: dict, urls: list, newest_car_id: str = None):
+    cars = (item for url in urls for item in requests.get(url).json()["listings"])
+
+    if newest_car_id:
+        filtered_cars = [
+            car
+            for car in cars
+            if car["priceInfo"]["priceCents"] <= config["max_price"] and car["itemId"] > newest_car_id
+        ]
+    else:
+        filtered_cars = [car for car in cars if car["priceInfo"]["priceCents"] <= config["max_price"]]
+
+    if not filtered_cars:
+        return newest_car_id
+
+    sorted_cars = sorted(filtered_cars, key=lambda x: int(x["itemId"][1:]), reverse=True)
+
+    if newest_car_id:
+        for car in sorted_cars:
+            bot_message = create_bot_message(car, config)
+            send_telegram_message(BOT_TOKEN, ADMIN_ID, bot_message)
+
+    newest_car_id = sorted_cars[0]["itemId"]
+    console.print(f"Newest car id: {newest_car_id}")
+    return newest_car_id
+
+
 def main():
-    config = get_website_config(CONFIG_SOURCE)
-    urls = create_urls(config=config, url_number=30, limit=LIMIT)
-    newest_car_id = None
+    config1 = get_website_config(CONFIG_SOURCE1)
+    config2 = get_website_config(CONFIG_SOURCE2)
+
+    urls1 = create_urls(config=config1, url_number=30, limit=LIMIT)
+    urls2 = create_urls(config=config2, url_number=30, limit=LIMIT)
+
+    newest_car_id_1 = None
+    newest_car_id_2 = None
 
     while True:
         try:
-            cars = (item for url in urls for item in requests.get(url).json()["listings"])
-
-            if newest_car_id:
-                filtered_cars = [
-                    car
-                    for car in cars
-                    if car["priceInfo"]["priceCents"] <= config["max_price"] and car["itemId"] > newest_car_id
-                ]
-            else:
-                filtered_cars = [car for car in cars if car["priceInfo"]["priceCents"] <= config["max_price"]]
-
-            if not filtered_cars:
-                time.sleep(SLEEP_TIME)
-                continue
-
-            sorted_cars = sorted(filtered_cars, key=lambda x: int(x["itemId"][1:]), reverse=True)
-
-            if newest_car_id:
-                for car in sorted_cars:
-                    bot_message = create_bot_message(car, config)
-                    send_telegram_message(BOT_TOKEN, ADMIN_ID, bot_message)
-
-            newest_car_id = sorted_cars[0]["itemId"]
-            console.print(f"Newest car id: {newest_car_id}")
+            newest_car_id_1 = check_cars(config=config1, urls=urls1, newest_car_id=newest_car_id_1)
+            newest_car_id_2 = check_cars(config=config2, urls=urls2, newest_car_id=newest_car_id_2)
 
         except Exception as e:
             console.log(f"Error fetching data: {e}")
