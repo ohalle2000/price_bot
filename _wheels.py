@@ -24,7 +24,7 @@ def create_wheels_bot_message(car: dict, config: dict):
     message += f'🔗 <a href="{listing_url}">View Listing</a>\n'
     return message
 
-def check_cars(config: dict, urls: list, chat_id: str, newest_car_id: str = None):
+def check_wheels(config: dict, urls: list, chat_id: str, newest_car_id: str = None):
     new_newest_car_id = newest_car_id
     try:
         cars = (item for url in urls for item in requests.get(url).json()["listings"])
