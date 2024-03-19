@@ -50,15 +50,16 @@ def check_cars(config: dict, urls: list, chat_id: str, newest_car_id: str = None
             return newest_car_id
     
         sorted_cars = sorted(filtered_cars, key=lambda x: int(x["itemId"][1:]), reverse=True)
-    
+        new_newest_car_id = sorted_cars[0]["itemId"]
+        console.print(f"Newest car id: {new_newest_car_id}")
+
         if newest_car_id:
             for car in sorted_cars:
                 bot_message = create_car_bot_message(car, config)
                 send_telegram_message(BOT_TOKEN, chat_id, bot_message)
     
-        newest_car_id = sorted_cars[0]["itemId"]
-        console.print(f"Newest car id: {newest_car_id}")
     except Exception as e:
         console.log(f"Error fetching data: {e}")
         send_telegram_message(BOT_TOKEN, chat_id, f"Error fetching data. Check logs for more info. {e}")
-    return newest_car_id
+        
+    return new_newest_car_id

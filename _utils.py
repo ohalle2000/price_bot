@@ -25,8 +25,12 @@ def send_telegram_message(bot_token: str, admin_id: int, message: str):
     return response.json()
 
 def translate_to_english(text):
-    """Translate text to English using Google Translator."""
-    return translator.translate(text)
+    try:
+        translated_text = translator.translate(text.encode('utf-8', 'replace').decode('utf-8'))
+    except Exception as e:
+        console.log(f"Error in translation: {e}")
+        translated_text = text
+    return translated_text
 
 def create_urls(config: dict, url_number: int = 5, limit: int = 100):
     urls = []
