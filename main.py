@@ -1,121 +1,40 @@
 import time
-import requests
-from rich.console import Console
-from urllib.parse import urlencode
-from geopy.distance import geodesic
-from deep_translator import GoogleTranslator
 
-from _utils import get_website_config, send_telegram_message
-from _secrets import BOT_TOKEN, ADMIN_ID
+from _cars import check_cars
+from _wheels import check_wheels
+from _utils import get_website_config, create_urls, console
+from _secrets import CHAT_ID1, CHAT_ID2
 
 # Constants
 SLEEP_TIME = 60
 LIMIT = 100
 CONFIG_SOURCE1 = "cars-2dehands"
 CONFIG_SOURCE2 = "cars-marktplaats"
-
-NIJMEGEN = (51.8433, 5.8609)
-LEUVEN = (50.8823, 4.7138)
-console = Console()
-
-translator = GoogleTranslator(source="auto", target="en")
-
-
-def translate_to_english(text):
-    """Translate text to English using Google Translator."""
-    return translator.translate(text)
-
-
-def calculate_driving_distance(origin: tuple, destination: tuple):
-    distance = geodesic(origin, destination).kilometers
-    return f"{distance:.2f} km"
-
-
-def create_bot_message(car: dict, config: dict):
-    price_euro = car["priceInfo"]["priceCents"] / 100
-    price_type = car["priceInfo"]["priceType"]
-    listing_url = f"{config['main_link']}{car['vipUrl']}"
-    lat = car["location"]["latitude"]
-    long = car["location"]["longitude"]
-
-    distance_nijmegen = calculate_driving_distance(NIJMEGEN, (lat, long))
-    distance_leuven = calculate_driving_distance(LEUVEN, (lat, long))
-
-    car_attributes = {attr["key"]: attr["value"] for attr in car["attributes"]}
-
-    model = car["vipUrl"].split("/")[3]
-
-    message = f"🚗 **New Car Listing Found!**\n"
-    message += f"#{model}\n"
-    message += f"🚘 Title: {translate_to_english(car['title'])}\n"
-    message += f"💰 Price: €{price_euro} ({price_type})\n"
-    message += f"📍 Location: {car['location']['cityName']}, {car['location']['countryName']}\n"
-    message += f"📍 Distance Nijmegen: {distance_nijmegen}, Leuven: {distance_leuven}\n"
-    message += f"🗒️ Description: {translate_to_english(car['categorySpecificDescription'])}\n"
-    message += f"📅 Year: {car_attributes.get('constructionYear')}\n"
-    message += f"🛣️ Km: {car_attributes.get('mileage', 'N/A')} km\n"
-    message += f"⛽ Fuel: {car_attributes.get('fuel', 'N/A')}\n"
-    message += f'🔗 <a href="{listing_url}">View Listing</a>\n'
-    return message
-
-
-def create_urls(config: dict, url_number: int = 5, limit: int = 100):
-    urls = []
-    for i in range(url_number):
-        query_params = config.copy()
-        query_params["offset"] = i * limit
-        query_params["limit"] = limit
-
-        url = f"{config.get('api_link', '')}?{urlencode(query_params)}"
-        urls.append(url)
-
-    return urls
-
-
-def check_cars(config: dict, urls: list, newest_car_id: str = None):
-    cars = (item for url in urls for item in requests.get(url).json()["listings"])
-
-    if newest_car_id:
-        filtered_cars = [
-            car
-            for car in cars
-            if car["priceInfo"]["priceCents"] <= config["max_price"] and car["itemId"] > newest_car_id
-        ]
-    else:
-        filtered_cars = [car for car in cars if car["priceInfo"]["priceCents"] <= config["max_price"]]
-
-    if not filtered_cars:
-        return newest_car_id
-
-    sorted_cars = sorted(filtered_cars, key=lambda x: int(x["itemId"][1:]), reverse=True)
-
-    if newest_car_id:
-        for car in sorted_cars:
-            bot_message = create_bot_message(car, config)
-            send_telegram_message(BOT_TOKEN, ADMIN_ID, bot_message)
-
-    newest_car_id = sorted_cars[0]["itemId"]
-    console.print(f"Newest car id: {newest_car_id}")
-    return newest_car_id
+CONFIG_SOURCE3 = "wheels-marktplaats"
+CONFIG_SOURCE4 = "wheels-2dehands"
 
 
 def main():
     config1 = get_website_config(CONFIG_SOURCE1)
     config2 = get_website_config(CONFIG_SOURCE2)
+    config3 = get_website_config(CONFIG_SOURCE3)
+    config4 = get_website_config(CONFIG_SOURCE4)
 
     urls1 = create_urls(config=config1, url_number=30, limit=LIMIT)
     urls2 = create_urls(config=config2, url_number=30, limit=LIMIT)
+    urls3 = create_urls(config=config3, url_number=2, limit=LIMIT)
+    urls4 = create_urls(config=config4, url_number=2, limit=LIMIT)
 
     newest_car_id_1 = None
     newest_car_id_2 = None
+    newest_car_id_3 = None
+    newest_car_id_4 = None
 
     while True:
-        try:
-            newest_car_id_1 = check_cars(config=config1, urls=urls1, newest_car_id=newest_car_id_1)
-            newest_car_id_2 = check_cars(config=config2, urls=urls2, newest_car_id=newest_car_id_2)
-
-        except Exception as e:
-            console.log(f"Error fetching data: {e}")
+        newest_car_id_1 = check_cars(config=config1, urls=urls1, newest_car_id=newest_car_id_1, chat_id=CHAT_ID1)
+        newest_car_id_2 = check_cars(config=config2, urls=urls2, newest_car_id=newest_car_id_2, chat_id=CHAT_ID1)
+        newest_car_id_3 = check_wheels(config=config3, urls=urls3, newest_car_id=newest_car_id_3, chat_id=CHAT_ID2)
+        newest_car_id_4 = check_wheels(config=config4, urls=urls4, newest_car_id=newest_car_id_4, chat_id=CHAT_ID2)
 
         time.sleep(SLEEP_TIME)
 

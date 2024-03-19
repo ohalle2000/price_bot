@@ -16,5 +16,27 @@
         "sortBy": "SORT_INDEX",
         "sortOrder": "DECREASING",
         "max_price": 500000
+    },
+    "wheels-marktplaats" : {
+        "main_link": "https://www.marktplaats.nl",
+        "api_link": "https://www.marktplaats.nl/lrp/api/search",
+        "l1CategoryId": "2600",
+        "l2CategoryId": "65",
+        "query": "audi",
+        "searchInTitleAndDescription": "true",
+        "sortBy": "SORT_INDEX",
+        "sortOrder": "DECREASING",
+        "max_price": 50000
+    },
+    "wheels-2dehands" : {
+        "main_link": "https://www.2dehands.be",
+        "api_link": "https://www.2dehands.be/lrp/api/search",
+        "l1CategoryId": "2600",
+        "l2CategoryId": "65",
+        "query": "audi",
+        "searchInTitleAndDescription": "true",
+        "sortBy": "SORT_INDEX",
+        "sortOrder": "DECREASING",
+        "max_price": 50000
     }
 }
