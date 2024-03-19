@@ -5,8 +5,7 @@
         "attributesById[]": "10898",
         "l1CategoryId": "91",
         "sortBy": "SORT_INDEX",
-        "sortOrder": "DECREASING",
-        "max_price": 500000
+        "sortOrder": "DECREASING"
     },
     "cars-2dehands" : {
         "main_link": "https://www.2dehands.be",
@@ -14,8 +13,7 @@
         "attributesById[]": "10898",
         "l1CategoryId": "91",
         "sortBy": "SORT_INDEX",
-        "sortOrder": "DECREASING",
-        "max_price": 500000
+        "sortOrder": "DECREASING"
     },
     "wheels-marktplaats" : {
         "main_link": "https://www.marktplaats.nl",
@@ -25,8 +23,7 @@
         "query": "audi",
         "searchInTitleAndDescription": "true",
         "sortBy": "SORT_INDEX",
-        "sortOrder": "DECREASING",
-        "max_price": 50000
+        "sortOrder": "DECREASING"
     },
     "wheels-2dehands" : {
         "main_link": "https://www.2dehands.be",
@@ -36,7 +33,6 @@
         "query": "audi",
         "searchInTitleAndDescription": "true",
         "sortBy": "SORT_INDEX",
-        "sortOrder": "DECREASING",
-        "max_price": 50000
+        "sortOrder": "DECREASING"
     }
 }
