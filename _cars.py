@@ -33,10 +33,10 @@ def create_car_bot_message(car: dict, config: dict):
     return message
 
 def check_cars(config: dict, urls: list, chat_id: str, newest_car_id: str = None):
+    new_newest_car_id = newest_car_id
     try:
-
         cars = (item for url in urls for item in requests.get(url).json()["listings"])
-    
+
         if newest_car_id:
             filtered_cars = [
                 car
@@ -45,10 +45,10 @@ def check_cars(config: dict, urls: list, chat_id: str, newest_car_id: str = None
             ]
         else:
             filtered_cars = [car for car in cars if car["priceInfo"]["priceCents"] <= config["max_price"]]
-    
+
         if not filtered_cars:
-            return newest_car_id
-    
+            return new_newest_car_id
+
         sorted_cars = sorted(filtered_cars, key=lambda x: int(x["itemId"][1:]), reverse=True)
         new_newest_car_id = sorted_cars[0]["itemId"]
         console.print(f"Newest car id: {new_newest_car_id}")
@@ -57,7 +57,7 @@ def check_cars(config: dict, urls: list, chat_id: str, newest_car_id: str = None
             for car in sorted_cars:
                 bot_message = create_car_bot_message(car, config)
                 send_telegram_message(BOT_TOKEN, chat_id, bot_message)
-    
+
     except Exception as e:
         console.log(f"Error fetching data: {e}")
         send_telegram_message(BOT_TOKEN, chat_id, f"Error fetching data. Check logs for more info. {e}")
