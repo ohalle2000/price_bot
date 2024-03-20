@@ -78,62 +78,62 @@ def main():
     newest_wheel_id_2 = None
 
     while True:
-        cars1 = get_ads(urls1)
-        cars3 = cars1.copy()
-        newest_car_id_1, cars1 = filter_ads(cars1, CONFIG_PRICE1_2, newest_car_id_1)
+        ads1 = get_ads(urls1)
+        ads3 = ads1.copy()
+        newest_car_id_1, ads1 = filter_ads(ads1, CONFIG_PRICE1_2, newest_car_id_1)
 
         check_ads(
             config=config1,
-            filtered_ads=cars1,
+            filtered_ads=ads1,
             chat_id=CHAT_ID1,
             function_for_message=create_cars_bot_message,
         )
 
-        cars1 = get_ads(urls2)
-        cars4 = cars2.copy()
-        newest_car_id_2, cars2 = filter_ads(cars2, CONFIG_PRICE1_2, newest_car_id_2)
+        ads2 = get_ads(urls2)
+        ads4 = ads2.copy()
+        newest_car_id_2, ads2 = filter_ads(ads2, CONFIG_PRICE1_2, newest_car_id_2)
 
         check_ads(
             config=config2,
-            filtered_ads=cars2,
+            filtered_ads=ads2,
             chat_id=CHAT_ID1,
             function_for_message=create_cars_bot_message,
         )
 
-        newest_car_id_3, cars3 = filter_ads(cars3, CONFIG_PRICE5, newest_car_id_3, allowed_models)
+        newest_car_id_3, ads3 = filter_ads(ads3, CONFIG_PRICE5, newest_car_id_3, allowed_models)
 
         check_ads(
             config=config1,
-            filtered_ads=cars3,
+            filtered_ads=ads3,
             chat_id=CHAT_ID2,
             function_for_message=create_cars_bot_message,
         )
 
-        newest_car_id_4, cars4 = filter_ads(cars4, CONFIG_PRICE5, newest_car_id_4, allowed_models)
+        newest_car_id_4, ads4 = filter_ads(ads4, CONFIG_PRICE5, newest_car_id_4, allowed_models)
 
         check_ads(
             config=config2,
-            filtered_ads=cars4,
+            filtered_ads=ads4,
             chat_id=CHAT_ID2,
             function_for_message=create_cars_bot_message,
         )
 
-        cars1 = get_ads(urls3)
-        newest_wheel_id_1, wheels1 = filter_ads(wheels1, CONFIG_PRICE3_4, newest_wheel_id_1)
+        ads5 = get_ads(urls3)
+        newest_wheel_id_1, ads5 = filter_ads(ads5, CONFIG_PRICE3_4, newest_wheel_id_1)
 
         check_ads(
             config=config3,
-            filtered_ads=wheels1,
+            filtered_ads=ads5,
             chat_id=CHAT_ID3,
             function_for_message=create_wheels_bot_message,
         )
 
-        cars1 = get_ads(urls4)
-        newest_wheel_id_2, wheels2 = filter_ads(wheels2, CONFIG_PRICE3_4, newest_wheel_id_2)
+        ads6 = get_ads(urls4)
+        newest_wheel_id_2, ads6 = filter_ads(ads6, CONFIG_PRICE3_4, newest_wheel_id_2)
 
         check_ads(
             config=config4,
-            filtered_ads=wheels2,
+            filtered_ads=ads6,
             chat_id=CHAT_ID3,
             function_for_message=create_wheels_bot_message,
         )
