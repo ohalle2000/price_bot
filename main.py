@@ -23,7 +23,7 @@ allowed_models = ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"]
 CONFIG_PRICE5 = 1000000
 
 
-def filter_ads(ads: list, max_price: int, newest_car_id: str = None, allowed_models: list = None) -> tuple:
+def filter_ads(ads: list, max_price: int, newest_car_id: str, allowed_models: list = None) -> tuple:
     filtered_ads = []
 
     for ad in ads:
@@ -37,14 +37,13 @@ def filter_ads(ads: list, max_price: int, newest_car_id: str = None, allowed_mod
 
     if not sorted_ads:
         return newest_car_id, []
-
-    newest_car_id = sorted_ads[0]["itemId"]
-    console.print(f"Newest id: {newest_car_id}")
+    
+    console.print(f"Newest id: {sorted_ads[0]["itemId"]}")
 
     if newest_car_id is None:
         return sorted_ads[0]["itemId"], []
 
-    return newest_car_id, sorted_ads
+    return sorted_ads[0]["itemId"], sorted_ads
 
 
 def check_ads(config: dict, filtered_ads: list, chat_id: str, function_for_message):
