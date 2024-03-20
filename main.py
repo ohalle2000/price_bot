@@ -20,7 +20,7 @@ CONFIG_SOURCE4 = "wheels-2dehands"
 CONFIG_PRICE3_4 = 50000
 
 allowed_models =['audi', 'volkswagen', 'seat', 'skoda', 'bmw', 'mini', 'lexus']
-CONFIG_PRICE5 = 900000
+CONFIG_PRICE5 = 1000000
 
 def filter_ads1(ads: list, max_price: int, newest_car_id: str = None) -> list:
 
