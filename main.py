@@ -22,6 +22,8 @@ CONFIG_PRICE3_4 = 50000
 allowed_models = ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"]
 CONFIG_PRICE5 = 1000000
 
+def get_ads(urls: list) -> list:
+    return [item for url in urls for item in requests.get(url).json()["listings"]]
 
 def filter_ads(ads: list, max_price: int, newest_car_id: str, allowed_models: list = None) -> tuple:
     filtered_ads = []
@@ -76,7 +78,7 @@ def main():
     newest_wheel_id_2 = None
 
     while True:
-        cars1 = [item for url in urls1 for item in requests.get(url).json()["listings"]]
+        cars1 = get_ads(urls1)
         cars3 = cars1.copy()
         newest_car_id_1, cars1 = filter_ads(cars1, CONFIG_PRICE1_2, newest_car_id_1)
 
@@ -87,9 +89,9 @@ def main():
             function_for_message=create_cars_bot_message,
         )
 
-        cars2 = [item for url in urls2 for item in requests.get(url).json()["listings"]]
+        cars1 = get_ads(urls2)
         cars4 = cars2.copy()
-        newest_car_id_2, cars2 = filter_ads(cars2, CONFIG_PRICE1_2, newest_car_id_2, allowed_models)
+        newest_car_id_2, cars2 = filter_ads(cars2, CONFIG_PRICE1_2, newest_car_id_2)
 
         check_ads(
             config=config2,
@@ -98,7 +100,7 @@ def main():
             function_for_message=create_cars_bot_message,
         )
 
-        newest_car_id_3, cars3 = filter_ads(cars3, CONFIG_PRICE5, newest_car_id_3)
+        newest_car_id_3, cars3 = filter_ads(cars3, CONFIG_PRICE5, newest_car_id_3, allowed_models)
 
         check_ads(
             config=config1,
@@ -116,7 +118,7 @@ def main():
             function_for_message=create_cars_bot_message,
         )
 
-        wheels1 = [item for url in urls3 for item in requests.get(url).json()["listings"]]
+        cars1 = get_ads(urls3)
         newest_wheel_id_1, wheels1 = filter_ads(wheels1, CONFIG_PRICE3_4, newest_wheel_id_1)
 
         check_ads(
@@ -126,7 +128,7 @@ def main():
             function_for_message=create_wheels_bot_message,
         )
 
-        wheels2 = [item for url in urls4 for item in requests.get(url).json()["listings"]]
+        cars1 = get_ads(urls4)
         newest_wheel_id_2, wheels2 = filter_ads(wheels2, CONFIG_PRICE3_4, newest_wheel_id_2)
 
         check_ads(
