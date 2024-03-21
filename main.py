@@ -28,6 +28,7 @@ def get_ads(urls: list) -> list:
     for url in urls:
         try:
             response = requests.get(url)
+            time.sleep(0.5)
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
@@ -159,8 +160,6 @@ def main():
         )
 
         print(newest_car_id_1, newest_car_id_2, newest_car_id_3, newest_car_id_4, newest_wheel_id_1, newest_wheel_id_2)
-
-        time.sleep(SLEEP_TIME)
 
 
 if __name__ == "__main__":
