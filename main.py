@@ -49,11 +49,12 @@ def get_ads(urls: list) -> list:
 def filter_ads(ads: list, max_price: int, newest_car_id: str, allowed_models: list = None) -> tuple:
     filtered_ads = []
 
-    for ad in ads:
+    for idx, ad in enumerate(ads):
         if ad["priceInfo"]["priceCents"] <= max_price and (newest_car_id is None or ad["itemId"] > newest_car_id):
             model = ad["vipUrl"].split("/")[3] if allowed_models is not None else None
 
             if allowed_models is None or model in allowed_models:
+                console.print(f"Found ad: '{ad['itemId']}' for index of '{idx}' size: '{len(ads)}'")
                 filtered_ads.append(ad)
 
     sorted_ads = sorted(filtered_ads, key=lambda x: int(x["itemId"][1:]), reverse=True)
@@ -86,8 +87,8 @@ def main():
     config3 = get_website_config(CONFIG_SOURCE3)
     config4 = get_website_config(CONFIG_SOURCE4)
 
-    urls1 = create_urls(config=config1, url_number=30, limit=LIMIT)
-    urls2 = create_urls(config=config2, url_number=30, limit=LIMIT)
+    urls1 = create_urls(config=config1, url_number=15, limit=LIMIT)
+    urls2 = create_urls(config=config2, url_number=15, limit=LIMIT)
     urls3 = create_urls(config=config3, url_number=2, limit=LIMIT)
     urls4 = create_urls(config=config4, url_number=2, limit=LIMIT)
 
