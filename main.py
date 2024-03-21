@@ -28,7 +28,7 @@ def get_ads(urls: list) -> list:
     for url in urls:
         try:
             response = requests.get(url)
-            time.sleep(4)
+            time.sleep(6)
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
