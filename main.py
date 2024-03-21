@@ -1,3 +1,4 @@
+import sys
 import time
 import requests
 
@@ -23,7 +24,26 @@ allowed_models = ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"]
 CONFIG_PRICE5 = 1000000
 
 def get_ads(urls: list) -> list:
-    return [item for url in urls for item in requests.get(url).json()["listings"]]
+    ads = []
+    for url in urls:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+            ads.extend(data["listings"])
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTPError for URL {url}: {e}")
+            print("Response:", response.text) 
+            sys.exit(1)
+        except requests.exceptions.JSONDecodeError as e:
+            print(f"JSONDecodeError for URL {url}: {e}")
+            print("Response:", response.text) 
+            sys.exit(1)
+        except Exception as e:
+            print(f"Error for URL {url}: {e}")
+            print("Response:", response.text) 
+            sys.exit(1)
+    return ads
 
 def filter_ads(ads: list, max_price: int, newest_car_id: str, allowed_models: list = None) -> tuple:
     filtered_ads = []
