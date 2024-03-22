@@ -10,11 +10,16 @@ from _secrets import BOT_TOKEN, CHAT_ID1, CHAT_ID2, CHAT_ID3
 console = Console()
 translator = GoogleTranslator(source="auto", target="en")
 
-
-def get_website_config(name: str):
-    with open("./config.json", "r") as file:
-        config = json.load(file)
-    return config[name]
+template_config = {
+    "source": str,
+    "max_price": int,
+    "chat_id": str,
+    "allowed_models": (type(None), list),
+    "url_numbers": int,
+    "function_for_message": callable,
+    "api_link": str,
+    "query_params": dict,
+}
 
 
 def calculate_driving_distance(origin: tuple, destination: tuple):
@@ -38,17 +43,14 @@ def translate_to_english(text):
     return translated_text
 
 
-def create_urls(config: dict, url_number: int = 5, limit: int = 100):
+def create_urls(config: dict, limit: int = 100):
     urls = []
-    for i in range(url_number):
-        query_params = config.copy()
-        query_params.pop("main_link", None)
+    for i in range(config["url_numbers"]):
+        query_params = config["query_params"].copy()
         query_params["offset"] = i * limit
         query_params["limit"] = limit
 
-        api_link = query_params.pop("api_link")
-
-        url = f"{api_link}?{urlencode(query_params)}"
+        url = f"{config["api_link"]}?{urlencode(query_params)}"
         urls.append(url)
 
     return urls
@@ -57,3 +59,21 @@ def create_urls(config: dict, url_number: int = 5, limit: int = 100):
 def send_errors_to_all_chats(e: Exception):
     for chat_id in [CHAT_ID1, CHAT_ID2, CHAT_ID3]:
         send_telegram_message(BOT_TOKEN, chat_id, f"bot error: {e}")
+
+
+def get_int_from_itemId(item_id: str):
+    return int(item_id[1:])
+
+def validate_config(config):
+    for t_key, t_value in template_config.items():
+        if t_key not in config:
+            raise ValueError(f"Key '{t_key}' missing in configuration")
+
+        if t_key == 'function_for_message':
+            if not callable(config[t_key]):
+                raise TypeError(f"The '{t_key}' should be a callable (function). Got: {type(config[t_key]).__name__}")
+        else:
+            if not isinstance(config[t_key], t_value):
+                raise TypeError(f"Incorrect type for key '{t_key}'. Expected {t_value.__name__}, got {type(config[t_key]).__name__}")
+            
+    console.print(f"Configuration for {config['source']} is valid")

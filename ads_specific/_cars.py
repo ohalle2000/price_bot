@@ -3,10 +3,12 @@ from _utils import translate_to_english, calculate_driving_distance
 NIJMEGEN = (51.8433, 5.8609)
 LEUVEN = (50.8823, 4.7138)
 
+
 def create_cars_bot_message(car: dict, config: dict):
     price_euro = car["priceInfo"]["priceCents"] / 100
     price_type = car["priceInfo"]["priceType"]
-    listing_url = f"{config['main_link']}{car['vipUrl']}"
+    main_link = config["api_link"].split("/lrp")[0]
+    listing_url = main_link + car["vipUrl"]
     lat = car["location"]["latitude"]
     long = car["location"]["longitude"]
 
