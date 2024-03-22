@@ -3,6 +3,7 @@
         "main_link": "https://www.marktplaats.nl",
         "api_link": "https://www.marktplaats.nl/lrp/api/search",
         "attributesById[]": "10898",
+        "attributesByKey[]": "offeredSince%3AVandaag",
         "l1CategoryId": "91",
         "sortBy": "SORT_INDEX",
         "sortOrder": "DECREASING"
@@ -11,6 +12,7 @@
         "main_link": "https://www.2dehands.be",
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "attributesById[]": "10898",
+        "attributesByKey[]": "offeredSince%3AVandaag",
         "l1CategoryId": "91",
         "sortBy": "SORT_INDEX",
         "sortOrder": "DECREASING"
@@ -19,6 +21,7 @@
         "main_link": "https://www.marktplaats.nl",
         "api_link": "https://www.marktplaats.nl/lrp/api/search",
         "l1CategoryId": "2600",
+        "attributesByKey[]": "offeredSince%3AVandaag",
         "l2CategoryId": "65",
         "query": "audi",
         "searchInTitleAndDescription": "true",
@@ -29,6 +32,7 @@
         "main_link": "https://www.2dehands.be",
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "l1CategoryId": "2600",
+        "attributesByKey[]": "offeredSince%3AVandaag",
         "l2CategoryId": "65",
         "query": "audi",
         "searchInTitleAndDescription": "true",

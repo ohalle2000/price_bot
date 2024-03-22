@@ -28,7 +28,7 @@ def get_ads(urls: list) -> list:
     for url in urls:
         try:
             response = requests.get(url)
-            time.sleep(6)
+            time.sleep(10)
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
@@ -87,8 +87,8 @@ def main():
     config3 = get_website_config(CONFIG_SOURCE3)
     config4 = get_website_config(CONFIG_SOURCE4)
 
-    urls1 = create_urls(config=config1, url_number=15, limit=LIMIT)
-    urls2 = create_urls(config=config2, url_number=15, limit=LIMIT)
+    urls1 = create_urls(config=config1, url_number=6, limit=LIMIT)
+    urls2 = create_urls(config=config2, url_number=6, limit=LIMIT)
     urls3 = create_urls(config=config3, url_number=2, limit=LIMIT)
     urls4 = create_urls(config=config4, url_number=2, limit=LIMIT)
 
