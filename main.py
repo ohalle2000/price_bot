@@ -2,9 +2,11 @@ import sys
 import time
 import requests
 
+from random import randint
+
 from _cars import create_cars_bot_message
 from _wheels import create_wheels_bot_message
-from _utils import get_website_config, create_urls, send_telegram_message, console
+from _utils import get_website_config, create_urls, send_telegram_message, send_errors_to_all_chats, console
 from _secrets import BOT_TOKEN, CHAT_ID1, CHAT_ID2, CHAT_ID3
 
 # Constants
@@ -15,8 +17,8 @@ CONFIG_SOURCE2 = "cars-marktplaats"
 
 CONFIG_PRICE1_2 = 500000
 
-CONFIG_SOURCE3 = "wheels-marktplaats"
-CONFIG_SOURCE4 = "wheels-2dehands"
+CONFIG_SOURCE3 = "wheels-2dehands"
+CONFIG_SOURCE4 = "wheels-marktplaats"
 
 CONFIG_PRICE3_4 = 50000
 
@@ -28,21 +30,16 @@ def get_ads(urls: list) -> list:
     for url in urls:
         try:
             response = requests.get(url)
-            time.sleep(10)
+            time.sleep(randint(0,15))
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
-        except requests.exceptions.HTTPError as e:
-            print(f"HTTPError for URL {url}: {e}")
-            print("Response:", response.text) 
-            sys.exit(1)
-        except requests.exceptions.JSONDecodeError as e:
-            print(f"JSONDecodeError for URL {url}: {e}")
-            print("Response:", response.text) 
-            sys.exit(1)
+            if len(data["listings"]) < LIMIT:
+                break
         except Exception as e:
             print(f"Error for URL {url}: {e}")
-            print("Response:", response.text) 
+            print("Response:", response.text)
+            send_errors_to_all_chats(e)
             sys.exit(1)
     return ads
 
@@ -54,7 +51,8 @@ def filter_ads(ads: list, max_price: int, newest_car_id: str, allowed_models: li
             model = ad["vipUrl"].split("/")[3] if allowed_models is not None else None
 
             if allowed_models is None or model in allowed_models:
-                console.print(f"Found ad: '{ad['itemId']}' for index of '{idx}' size: '{len(ads)}'")
+                if newest_car_id:
+                    console.print(f"Found ad: '{ad['itemId']}' for index of '{idx}' size: '{len(ads)}'")
                 filtered_ads.append(ad)
 
     sorted_ads = sorted(filtered_ads, key=lambda x: int(x["itemId"][1:]), reverse=True)
@@ -87,8 +85,8 @@ def main():
     config3 = get_website_config(CONFIG_SOURCE3)
     config4 = get_website_config(CONFIG_SOURCE4)
 
-    urls1 = create_urls(config=config1, url_number=6, limit=LIMIT)
-    urls2 = create_urls(config=config2, url_number=6, limit=LIMIT)
+    urls1 = create_urls(config=config1, url_number=5, limit=LIMIT)
+    urls2 = create_urls(config=config2, url_number=5, limit=LIMIT)
     urls3 = create_urls(config=config3, url_number=2, limit=LIMIT)
     urls4 = create_urls(config=config4, url_number=2, limit=LIMIT)
 
