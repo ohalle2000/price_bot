@@ -12,7 +12,7 @@ translator = GoogleTranslator(source="auto", target="en")
 
 template_config = {
     "source": str,
-    "max_price": int,
+    "max_price": (type(None),int),
     "chat_id": str,
     "allowed_models": (type(None), list),
     "url_numbers": int,

@@ -1,5 +1,5 @@
 from ads_specific._cars import create_cars_bot_message
-from ads_specific._wheels import create_wheels_bot_message
+from ads_specific._wheels import create_basic_bot_message
 from _secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3
 
 config = {
@@ -73,7 +73,7 @@ config = {
         "chat_id": CHAT_ID3,
         "allowed_models": None,
         "url_numbers": 2,
-        "function_for_message": create_wheels_bot_message,
+        "function_for_message": create_basic_bot_message,
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "query_params": {
             "l1CategoryId": "2600",
@@ -90,13 +90,28 @@ config = {
         "chat_id": CHAT_ID3,
         "allowed_models": None,
         "url_numbers": 2,
-        "function_for_message": create_wheels_bot_message,
+        "function_for_message": create_basic_bot_message,
         "api_link": "https://www.marktplaats.nl/lrp/api/search",
         "query_params": {
             "l1CategoryId": "2600",
             "l2CategoryId": "65",
             "query": "audi",
             "searchInTitleAndDescription": "true",
+            "sortBy": "SORT_INDEX",
+            "sortOrder": "DECREASING",
+        },
+    },
+    "psvita_marktplaats": {
+        "source": "psvita-marktplaats",
+        "max_price": None,
+        "chat_id": CHAT_ID3,
+        "allowed_models": None,
+        "url_numbers": 2,
+        "function_for_message": create_basic_bot_message,
+        "api_link": "https://www.marktplaats.nl/lrp/api/search",
+        "query_params": {
+            "l1CategoryId": "356",
+            "l2CategoryId": "2895",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
         },

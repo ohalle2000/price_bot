@@ -9,17 +9,24 @@ from _secrets import BOT_TOKEN
 from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
 
 LIMIT = 100
-
+SLEEP_TIME = 5
+RETRY_TIME = 60
 
 def get_ads(urls: list) -> list:
     ads = []
     for url in urls:
         try:
             response = requests.get(url)
-            time.sleep(randint(0, 5))
+            time.sleep(randint(0, SLEEP_TIME))
+            # check if error code is 502 and sleep for 10 seconds
+            if response.status_code == 502:
+                time.sleep(RETRY_TIME)
+                response = requests.get(url)
+
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
+
             # check if there is no more ads in api response
             if len(data["listings"]) < LIMIT:
                 break
@@ -35,7 +42,7 @@ def filter_ads(ads: list, config: dict) -> tuple:
     filtered_ads = []
     for idx, ad in enumerate(ads):
         ad_id = get_int_from_itemId(ad["itemId"])
-        if ad["priceInfo"]["priceCents"] <= config["max_price"] and (
+        if (config["max_price"] is None or ad["priceInfo"]["priceCents"] <= config["max_price"]) and (
             config["last_id"] is None or ad_id > config["last_id"]
         ):
             model = ad["vipUrl"].split("/")[3] if config["allowed_models"] is not None else None
