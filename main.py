@@ -9,7 +9,7 @@ from _secrets import BOT_TOKEN
 from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
 
 LIMIT = 100
-SLEEP_TIME = 5
+SLEEP_TIME = 10
 RETRY_TIME = 60
 
 def get_ads(urls: list) -> list:
