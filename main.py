@@ -12,6 +12,8 @@ LIMIT = 99
 SLEEP_TIME = 10
 RETRY_TIME = 60
 
+ERROR_CODES = [502, 429]
+
 def get_ads(urls: list) -> list:
     ads = []
     for url in urls:
@@ -19,10 +21,11 @@ def get_ads(urls: list) -> list:
             response = requests.get(url)
             time.sleep(randint(0, SLEEP_TIME))
             # check if error code is 502 and sleep for 10 seconds
-            if response.status_code == 502:
+            if response.status_code in ERROR_CODES:
+                console.print(f"Error {response.status_code} for URL {url}")
                 time.sleep(RETRY_TIME)
                 response = requests.get(url)
-
+            
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
