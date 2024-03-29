@@ -3,16 +3,15 @@ import time
 import json
 import requests
 from random import randint
-
 from config import config
 from _secrets import BOT_TOKEN
 from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
 
-LIMIT = 99
-SLEEP_TIME = 10
+LIMIT = 100
+SLEEP_TIME = 20
 RETRY_TIME = 60
 
-ERROR_CODES = [502, 429]
+ERROR_CODES = [502] #429
 
 def get_ads(urls: list) -> list:
     ads = []
@@ -35,7 +34,6 @@ def get_ads(urls: list) -> list:
                 break
         except Exception as e:
             print(f"Error for URL {url}: {e}")
-            print("Response:", response.text)
             # send_errors_to_all_chats(e)
             sys.exit(1)
     return ads
@@ -83,6 +81,9 @@ def check_ads(config: dict, filtered_ads: list):
 
 
 def main():
+    response = requests.get('https://httpbin.org/ip')
+
+    print('IP used for the bot is {0}'.format(response.json()['origin']))
 
     for add_config in config:
         add_config = config[add_config]
