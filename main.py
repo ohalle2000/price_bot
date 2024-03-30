@@ -34,7 +34,7 @@ def get_ads(urls: list) -> list:
                 break
         except Exception as e:
             print(f"Error for URL {url}: {e}")
-            # send_errors_to_all_chats(e)
+            send_errors_to_all_chats(e)
             sys.exit(1)
     return ads
 
