@@ -8,7 +8,7 @@ from _secrets import BOT_TOKEN
 from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
 
 LIMIT = 100
-SLEEP_TIME = 15
+SLEEP_TIME = 17
 RETRY_TIME = 60
 
 ERROR_CODES = [502] #429
@@ -102,9 +102,15 @@ def main():
             else:
                 ads = get_ads(urls=add_config["urls"])
                 cache_ads[cache_key] = ads
-
+            
             ads = filter_ads(ads=ads, config=add_config)
             check_ads(config=add_config, filtered_ads=ads)
+
+            if "start_time" not in add_config:
+                add_config["start_time"] = time.time()
+            else:
+                console.print(f"Time taken for {add_config['source']}: {time.time() - add_config['start_time']}")
+                add_config["start_time"] = time.time()
 
 
 if __name__ == "__main__":

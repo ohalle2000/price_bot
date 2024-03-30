@@ -4,7 +4,7 @@ from _secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3
 
 config = {
     "cars_2dehands_1": {
-        "source": "cars-2dehands",
+        "source": "cars-2dehands1",
         "max_price": 500000,
         "chat_id": CHAT_ID1,
         "allowed_models": None,
@@ -20,7 +20,7 @@ config = {
         },
     },
     "cars_marktplaats_1": {
-        "source": "cars-marktplaats",
+        "source": "cars-marktplaats1",
         "max_price": 500000,
         "chat_id": CHAT_ID1,
         "allowed_models": None,
@@ -36,7 +36,7 @@ config = {
         },
     },
     "cars_2dehands_2": {
-        "source": "cars-2dehands",
+        "source": "cars-2dehands2",
         "max_price": 1000000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
@@ -52,7 +52,7 @@ config = {
         },
     },
     "cars_marktplaats_2": {
-        "source": "cars-marktplaats",
+        "source": "cars-marktplaats2",
         "max_price": 1000000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
@@ -95,6 +95,22 @@ config = {
         "query_params": {
             "l1CategoryId": "356",
             "l2CategoryId": "2895",
+            "searchInTitleAndDescription": "true",
+            "sortBy": "SORT_INDEX",
+            "sortOrder": "DECREASING",
+        },
+    },
+    "karcher_marktplaats": {
+        "source": "karcher-marktplaats",
+        "max_price": None,
+        "chat_id": CHAT_ID3,
+        "allowed_models": None,
+        "url_numbers": 1,
+        "function_for_message": create_basic_bot_message,
+        "api_link": "https://www.marktplaats.nl/lrp/api/search",
+        "query_params": {
+            "query": "karcher%20wd",
+            "searchInTitleAndDescription": "true",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
         },
