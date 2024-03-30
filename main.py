@@ -8,7 +8,7 @@ from _secrets import BOT_TOKEN
 from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
 
 LIMIT = 100
-SLEEP_TIME = 20
+SLEEP_TIME = 15
 RETRY_TIME = 60
 
 ERROR_CODES = [502] #429

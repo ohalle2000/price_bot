@@ -8,7 +8,7 @@ config = {
         "max_price": 500000,
         "chat_id": CHAT_ID1,
         "allowed_models": None,
-        "url_numbers": 3,
+        "url_numbers": 5,
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "query_params": {
@@ -24,7 +24,7 @@ config = {
         "max_price": 500000,
         "chat_id": CHAT_ID1,
         "allowed_models": None,
-        "url_numbers": 3,
+        "url_numbers": 5,
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.marktplaats.nl/lrp/api/search",
         "query_params": {
@@ -40,7 +40,7 @@ config = {
         "max_price": 1000000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
-        "url_numbers": 3,
+        "url_numbers": 5,
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "query_params": {
@@ -56,7 +56,7 @@ config = {
         "max_price": 1000000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
-        "url_numbers": 3,
+        "url_numbers": 5,
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.marktplaats.nl/lrp/api/search",
         "query_params": {
