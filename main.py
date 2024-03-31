@@ -115,8 +115,8 @@ def main():
                 if time_taken < MIN_WAIT_TIME:
                     time.sleep(MIN_WAIT_TIME - time_taken)
 
-                console.print(f"Time taken for {add_config['source']}: {time_taken}")
-                
+                console.print(f"Time taken for {add_config['source']}: {time.time() - add_config["start_time"]}")
+
                 add_config["start_time"] = time.time()
 
 
