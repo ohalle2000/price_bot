@@ -174,15 +174,15 @@ config = {
     },
     "cars_2dehands_3": {
         "source": "cars-2dehands3",
-        "min_price": 1,
+        "min_price": 20,
         "max_price": 250,
         "chat_id": CHAT_ID4,
         "allowed_models": None,
         "url_numbers": 5,
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.2dehands.be/lrp/api/search",
-        "max_distance_nijmegen": 50,
-        "max_distance_leuven": None,
+        "max_distance_nijmegen": None,
+        "max_distance_leuven": 50,
         "query_params": {
             "attributesById[]": "10898",
             "attributesByKey[]": "offeredSince:Vandaag",

@@ -73,6 +73,8 @@ def check_conditions(config: dict, ad:dict) -> bool:
     
     # check the distance of the ad is within the limit to leuven
     if config["max_distance_leuven"] is not None:
+        ad_lat = ad["location"]["latitude"]
+        ad_long = ad["location"]["longitude"]
         distance_leuven = int(calculate_driving_distance(LEUVEN, (ad_lat, ad_long)))
         if distance_leuven <= config["max_distance_leuven"]:
             return False
