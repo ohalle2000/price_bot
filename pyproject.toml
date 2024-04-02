@@ -12,6 +12,7 @@ rich = "^13.6.0"
 python-dotenv = "^1.0.0"
 deep-translator = "^1.11.4"
 geopy = "^2.4.1"
+art = "^6.1"
 
 
 [build-system]

@@ -6,12 +6,16 @@ from geopy.distance import geodesic
 from deep_translator import GoogleTranslator
 from _secrets import BOT_TOKEN, CHAT_ID1, CHAT_ID2, CHAT_ID3
 
+NIJMEGEN = (51.8433, 5.8609)
+LEUVEN = (50.8823, 4.7138)
+
 
 console = Console()
 translator = GoogleTranslator(source="auto", target="en")
 
 template_config = {
     "source": str,
+    "min_price": (type(None),int),
     "max_price": (type(None),int),
     "chat_id": str,
     "allowed_models": (type(None), list),
@@ -19,12 +23,13 @@ template_config = {
     "function_for_message": callable,
     "api_link": str,
     "query_params": dict,
+    "max_distance_nijmegen": (type(None), int),
+    "max_distance_leuven": (type(None), int),
 }
 
 
 def calculate_driving_distance(origin: tuple, destination: tuple):
-    distance = geodesic(origin, destination).kilometers
-    return f"{distance:.2f} km"
+    return geodesic(origin, destination).kilometers
 
 
 def send_telegram_message(bot_token: str, admin_id: int, message: str):

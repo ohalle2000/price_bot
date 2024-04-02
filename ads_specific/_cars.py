@@ -1,7 +1,4 @@
-from _utils import translate_to_english, calculate_driving_distance
-
-NIJMEGEN = (51.8433, 5.8609)
-LEUVEN = (50.8823, 4.7138)
+from _utils import translate_to_english, calculate_driving_distance, NIJMEGEN, LEUVEN
 
 
 def create_cars_bot_message(car: dict, config: dict):
@@ -24,7 +21,7 @@ def create_cars_bot_message(car: dict, config: dict):
     message += f"🚘 Title: {translate_to_english(car['title'])}\n"
     message += f"💰 Price: €{price_euro} ({price_type})\n"
     message += f"📍 Location: {car['location'].get('cityName', 'N/A')}, {car['location'].get('countryName', 'N/A')}\n"
-    message += f"📍 Distance Nijmegen: {distance_nijmegen}, Leuven: {distance_leuven}\n"
+    message += f"📍 Distance Nijmegen: {distance_nijmegen:.2f} km, Leuven: {distance_leuven:.2f} km\n"
     message += f"🗒️ Description: {translate_to_english(car['categorySpecificDescription'])}\n"
     message += f"📅 Year: {car_attributes.get('constructionYear')}\n"
     message += f"🛣️ Km: {car_attributes.get('mileage', 'N/A')} km\n"

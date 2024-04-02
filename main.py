@@ -2,10 +2,13 @@ import sys
 import time
 import json
 import requests
+from art import tprint
 from random import randint
+
 from config import config
 from _secrets import BOT_TOKEN
-from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, get_int_from_itemId, validate_config, console
+from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, console
+from _utils import get_int_from_itemId, validate_config, calculate_driving_distance, NIJMEGEN, LEUVEN
 
 LIMIT = 100
 SLEEP_TIME = 17 # seconds
@@ -20,6 +23,7 @@ def get_ads(urls: list) -> list:
         try:
             response = requests.get(url)
             time.sleep(randint(0, SLEEP_TIME))
+
             # check if error code is 502 and sleep for 10 seconds
             if response.status_code in ERROR_CODES:
                 console.print(f"Error {response.status_code} for URL {url}")
@@ -33,34 +37,74 @@ def get_ads(urls: list) -> list:
             # check if there is no more ads in api response
             if len(data["listings"]) < LIMIT:
                 break
+
         except Exception as e:
-            print(f"Error for URL {url}: {e}")
-            send_errors_to_all_chats(e)
+            console.print(f"Error for URL {url}: {e}")
+            # send_errors_to_all_chats(e)
             sys.exit(1)
     return ads
+
+def check_conditions(config: dict, ad:dict) -> bool:
+    # check if the add is new
+    if config["last_id"] is not None:
+        ad_id = get_int_from_itemId(ad["itemId"])
+        if ad_id <= config["last_id"]:
+            return False        
+            
+    # check the maximum price of the ad
+    if config["max_price"] is not None:
+        ad_price = int(ad["priceInfo"]["priceCents"] / 100)
+        if ad_price > config["max_price"]:
+            return False
+        
+    # check the minimum price of the ad
+    if config["min_price"] is not None:
+        ad_price = int(ad["priceInfo"]["priceCents"] / 100)
+        if ad_price < config["min_price"]:
+            return False
+
+    # check the distance of the ad is within the limit to nijmegen
+    if config["max_distance_nijmegen"] is not None:
+        ad_lat = ad["location"]["latitude"]
+        ad_long = ad["location"]["longitude"]
+        distance_nijmegen = int(calculate_driving_distance(NIJMEGEN, (ad_lat, ad_long)))
+        if distance_nijmegen <= config["max_distance_nijmegen"]:
+            return False
+    
+    # check the distance of the ad is within the limit to leuven
+    if config["max_distance_leuven"] is not None:
+        distance_leuven = int(calculate_driving_distance(LEUVEN, (ad_lat, ad_long)))
+        if distance_leuven <= config["max_distance_leuven"]:
+            return False
+    
+    # check if the model of is allowed (for car)
+    if config["allowed_models"] is not None:
+        ad_model = ad["vipUrl"].split("/")[3]
+        if ad_model not in config["allowed_models"]:
+            return False
+    
+    return True
 
 
 def filter_ads(ads: list, config: dict) -> tuple:
     filtered_ads = []
     for idx, ad in enumerate(ads):
-        ad_id = get_int_from_itemId(ad["itemId"])
-        if (config["max_price"] is None or ad["priceInfo"]["priceCents"] <= config["max_price"]) and (
-            config["last_id"] is None or ad_id > config["last_id"]
-        ):
-            model = ad["vipUrl"].split("/")[3] if config["allowed_models"] is not None else None
 
-            if config["allowed_models"] is None or model in config["allowed_models"]:
-                if config["last_id"]:
-                    console.print(f"Found ad: '{ad_id}' for index of '{idx}' size: '{len(ads)}'")
-                filtered_ads.append(ad)
+        if not check_conditions(config, ad):
+            continue
 
-    sorted_ads = sorted(filtered_ads, key=lambda x: int(x["itemId"][1:]), reverse=True)
+        if config["last_id"]:
+            console.print(f"Found ad: '{get_int_from_itemId(ad["itemId"])}' for '{config["source"]}' with index of '{idx}' size: '{len(ads)}'")
+
+        filtered_ads.append(ad)
+
+    sorted_ads = sorted(filtered_ads, key=lambda x: get_int_from_itemId(x["itemId"]), reverse=True)
 
     if not sorted_ads:
         return []
 
     last_found_ad_id = get_int_from_itemId(sorted_ads[0]["itemId"])
-    console.print(f"Last found add id for {config["source"]}: {last_found_ad_id}")
+    console.print(f"Last found add id for '{config["source"]}': {last_found_ad_id}")
 
     # don't send the adds from the first iteration
     if config["last_id"] is None:
@@ -83,41 +127,41 @@ def check_ads(config: dict, filtered_ads: list):
 
 def main():
     response = requests.get('https://httpbin.org/ip')
+    tprint("Price Bot")
+    console.print('IP used for the bot is {0}'.format(response.json()['origin']))
 
-    print('IP used for the bot is {0}'.format(response.json()['origin']))
-
-    for add_config in config:
-        add_config = config[add_config]
-        validate_config(add_config)
-        add_config["urls"] = create_urls(config=add_config, limit=LIMIT)
-        add_config["last_id"] = None
+    for ad_config in config:
+        ad_config = config[ad_config]
+        validate_config(ad_config)
+        ad_config["urls"] = create_urls(config=ad_config, limit=LIMIT)
+        ad_config["last_id"] = None
 
     while True:
         cache_ads = {}
-        for add_config in config:
-            add_config = config[add_config]
-            cache_key = f"{add_config['api_link']}_{json.dumps(add_config['query_params'], sort_keys=True)}"
+        for ad_config in config:
+            ad_config = config[ad_config]
+            cache_key = f"{ad_config['api_link']}_{json.dumps(ad_config['query_params'], sort_keys=True)}"
 
             if cache_key in cache_ads:
                 ads = cache_ads[cache_key]
             else:
-                ads = get_ads(urls=add_config["urls"])
+                ads = get_ads(urls=ad_config["urls"])
                 cache_ads[cache_key] = ads
             
-            ads = filter_ads(ads=ads, config=add_config)
-            check_ads(config=add_config, filtered_ads=ads)
+            ads = filter_ads(ads=ads, config=ad_config)
+            check_ads(config=ad_config, filtered_ads=ads)
 
-            if "start_time" not in add_config:
-                add_config["start_time"] = time.time()
+            if "start_time" not in ad_config:
+                ad_config["start_time"] = time.time()
             else:
-                time_taken = time.time() - add_config["start_time"]
+                time_taken = time.time() - ad_config["start_time"]
 
                 if time_taken < MIN_WAIT_TIME:
                     time.sleep(MIN_WAIT_TIME - time_taken)
 
-                console.print(f"Time taken for {add_config['source']}: {time.time() - add_config["start_time"]}")
+                console.print(f"Time taken for {ad_config['source']}: {time.time() - ad_config["start_time"]}")
 
-                add_config["start_time"] = time.time()
+                ad_config["start_time"] = time.time()
 
 
 if __name__ == "__main__":

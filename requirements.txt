@@ -3,3 +3,4 @@ rich
 python-dotenv
 geopy
 deep-translator
+art
