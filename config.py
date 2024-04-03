@@ -1,5 +1,5 @@
-from ads_specific._cars import create_cars_bot_message
-from ads_specific._wheels import create_basic_bot_message
+from ads_specific.cars import create_cars_bot_message
+from ads_specific.wheels import create_basic_bot_message
 from _secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3, CHAT_ID4
 
 config = {

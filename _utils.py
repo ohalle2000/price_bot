@@ -1,4 +1,3 @@
-import json
 import requests
 from urllib.parse import urlencode
 from rich.console import Console
