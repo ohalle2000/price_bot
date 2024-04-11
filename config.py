@@ -182,7 +182,7 @@ config = {
         "function_for_message": create_cars_bot_message,
         "api_link": "https://www.2dehands.be/lrp/api/search",
         "max_distance_nijmegen": None,
-        "max_distance_leuven": 50,
+        "max_distance_leuven": None,
         "query_params": {
             "attributesById[]": "10898",
             "attributesByKey[]": "offeredSince:Vandaag",
