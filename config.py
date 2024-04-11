@@ -174,8 +174,8 @@ config = {
     },
     "cars_2dehands_3": {
         "source": "cars-2dehands3",
-        "min_price": 20,
-        "max_price": 250,
+        "min_price": None,
+        "max_price": 15000,
         "chat_id": CHAT_ID4,
         "allowed_models": None,
         "url_numbers": 5,
