@@ -7,8 +7,9 @@ from random import randint
 
 from config import config
 from _secrets import BOT_TOKEN
-from _utils import create_urls, send_telegram_message, send_errors_to_all_chats, console
+from _utils import create_urls, send_telegram_message, console
 from _utils import get_int_from_itemId, validate_config, calculate_driving_distance, NIJMEGEN, LEUVEN
+# from _utils import send_errors_to_all_chats
 
 LIMIT = 100
 SLEEP_TIME = 17  # seconds
@@ -97,8 +98,10 @@ def filter_ads(ads: list, config: dict) -> tuple:
             continue
 
         if config["last_id"]:
-            console.print(f"Found ad: '{get_int_from_itemId(ad["itemId"])}' for '{config["source"]}' with index of '{idx}' size: '{len(ads)}'")
-
+            console.print(
+                f"Found ad: '{get_int_from_itemId(ad['itemId'])}' for "
+                f"'{config['source']}' with index of '{idx}' size: '{len(ads)}'"
+            )
         filtered_ads.append(ad)
 
     sorted_ads = sorted(filtered_ads, key=lambda x: get_int_from_itemId(x["itemId"]), reverse=True)
@@ -131,7 +134,7 @@ def check_ads(config: dict, filtered_ads: list):
 def main():
     response = requests.get('https://httpbin.org/ip')
     tprint("Price Bot")
-    console.print('IP used for the bot is {0}'.format(response.json()['origin']))
+    console.print('IP used for the bot is {}'.format(response.json()['origin']))
 
     for ad_config in config:
         ad_config = config[ad_config]

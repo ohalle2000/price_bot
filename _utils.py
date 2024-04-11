@@ -79,6 +79,8 @@ def validate_config(config):
                 raise TypeError(f"The '{t_key}' should be a callable (function). Got: {type(config[t_key]).__name__}")
         else:
             if not isinstance(config[t_key], t_value):
-                raise TypeError(f"Incorrect type for key '{t_key}'. Expected {t_value.__name__}, got {type(config[t_key]).__name__}")
-
+                raise TypeError(
+                    f"Incorrect type for key '{t_key}'. Expected {t_value.__name__}, "
+                    f"got {type(config[t_key]).__name__}"
+                )
     console.print(f"Configuration for {config['source']} is valid")

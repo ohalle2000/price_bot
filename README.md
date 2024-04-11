@@ -5,6 +5,7 @@ This is a simple bot that can be used to track ads on Marktplaats.nl and 2dehand
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
+
 - You have installed Python 3.8 or higher
 - Installed Poetry (version >= 1.8.2)
 
@@ -16,11 +17,13 @@ Before you begin, ensure you have met the following requirements:
 ```shell
 poetry install
 ```
+
 3. Activate the virtual environment:
 
 ```shell
 poetry shell
 ```
+
 4. Create a `.env` file in the root of the project and add the following variables:
 
 ```shell
@@ -41,9 +44,10 @@ python main.py
 
 ## Adding new search criteria
 
-To add new search criteria upu need to modify the config.py file. If you want to add new chat_id, you need to add it to the .env file and add it to _secrets.py file.
+To add new search criteria upu need to modify the config.py file. If you want to add new chat_id, you need to add it to the .env file and add it to \_secrets.py file.
 
 ## Config
+
 This configuration file defines the parameters for scraping car data. Each section in the configuration represents a different data source or scraping rule set.
 
 Template for configuration sections:
