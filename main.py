@@ -11,11 +11,11 @@ from _utils import create_urls, send_telegram_message, send_errors_to_all_chats,
 from _utils import get_int_from_itemId, validate_config, calculate_driving_distance, NIJMEGEN, LEUVEN
 
 LIMIT = 100
-SLEEP_TIME = 17 # seconds
-RETRY_TIME = 60 # seconds
-MIN_WAIT_TIME = 120 # seconds
+SLEEP_TIME = 17  # seconds
+RETRY_TIME = 60  # seconds
+MIN_WAIT_TIME = 120  # seconds
+ERROR_CODES = [502]  # 429
 
-ERROR_CODES = [502] #429
 
 def get_ads(urls: list) -> list:
     ads = []
@@ -29,7 +29,7 @@ def get_ads(urls: list) -> list:
                 console.print(f"Error {response.status_code} for URL {url}")
                 time.sleep(RETRY_TIME)
                 response = requests.get(url)
-            
+
             response.raise_for_status()
             data = response.json()
             ads.extend(data["listings"])
@@ -44,19 +44,20 @@ def get_ads(urls: list) -> list:
             sys.exit(1)
     return ads
 
-def check_conditions(config: dict, ad:dict) -> bool:
+
+def check_conditions(config: dict, ad: dict) -> bool:
     # check if the add is new
     if config["last_id"] is not None:
         ad_id = get_int_from_itemId(ad["itemId"])
         if ad_id <= config["last_id"]:
-            return False        
-            
+            return False
+
     # check the maximum price of the ad
     if config["max_price"] is not None:
         ad_price = int(ad["priceInfo"]["priceCents"] / 100)
         if ad_price > config["max_price"]:
             return False
-        
+
     # check the minimum price of the ad
     if config["min_price"] is not None:
         ad_price = int(ad["priceInfo"]["priceCents"] / 100)
@@ -70,7 +71,7 @@ def check_conditions(config: dict, ad:dict) -> bool:
         distance_nijmegen = int(calculate_driving_distance(NIJMEGEN, (ad_lat, ad_long)))
         if distance_nijmegen <= config["max_distance_nijmegen"]:
             return False
-    
+
     # check the distance of the ad is within the limit to leuven
     if config["max_distance_leuven"] is not None:
         ad_lat = ad["location"]["latitude"]
@@ -78,13 +79,13 @@ def check_conditions(config: dict, ad:dict) -> bool:
         distance_leuven = int(calculate_driving_distance(LEUVEN, (ad_lat, ad_long)))
         if distance_leuven <= config["max_distance_leuven"]:
             return False
-    
+
     # check if the model of is allowed (for car)
     if config["allowed_models"] is not None:
         ad_model = ad["vipUrl"].split("/")[3]
         if ad_model not in config["allowed_models"]:
             return False
-    
+
     return True
 
 
@@ -149,7 +150,7 @@ def main():
             else:
                 ads = get_ads(urls=ad_config["urls"])
                 cache_ads[cache_key] = ads
-            
+
             ads = filter_ads(ads=ads, config=ad_config)
             check_ads(config=ad_config, filtered_ads=ads)
 

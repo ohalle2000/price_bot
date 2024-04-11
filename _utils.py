@@ -7,15 +7,15 @@ from _secrets import BOT_TOKEN, CHAT_ID1, CHAT_ID2, CHAT_ID3
 
 NIJMEGEN = (51.8433, 5.8609)
 LEUVEN = (50.8823, 4.7138)
-
+HERENT = (50.9093, 4.6774)
 
 console = Console()
 translator = GoogleTranslator(source="auto", target="en")
 
 template_config = {
     "source": str,
-    "min_price": (type(None),int),
-    "max_price": (type(None),int),
+    "min_price": (type(None), int),
+    "max_price": (type(None), int),
     "chat_id": str,
     "allowed_models": (type(None), list),
     "url_numbers": int,
@@ -68,6 +68,7 @@ def send_errors_to_all_chats(e: Exception):
 def get_int_from_itemId(item_id: str):
     return int(item_id[1:])
 
+
 def validate_config(config):
     for t_key, t_value in template_config.items():
         if t_key not in config:
@@ -79,5 +80,5 @@ def validate_config(config):
         else:
             if not isinstance(config[t_key], t_value):
                 raise TypeError(f"Incorrect type for key '{t_key}'. Expected {t_value.__name__}, got {type(config[t_key]).__name__}")
-            
+
     console.print(f"Configuration for {config['source']} is valid")
