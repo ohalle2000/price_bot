@@ -6,9 +6,9 @@ from art import tprint
 from random import randint
 
 from config import config
-from _secrets import BOT_TOKEN
-from _utils import create_urls, send_telegram_message, console
-from _utils import get_int_from_itemId, validate_config, calculate_driving_distance, NIJMEGEN, LEUVEN
+from tools.secrets import BOT_TOKEN
+from tools.utils import create_urls, send_telegram_message, console
+from tools.utils import get_int_from_itemId, validate_config, calculate_driving_distance, NIJMEGEN, LEUVEN
 # from _utils import send_errors_to_all_chats
 
 LIMIT = 100
@@ -90,7 +90,7 @@ def check_conditions(config: dict, ad: dict) -> bool:
     return True
 
 
-def filter_ads(ads: list, config: dict) -> tuple:
+def send_ads(ads: list, config: dict) -> None:
     filtered_ads = []
     for idx, ad in enumerate(ads):
 
@@ -107,7 +107,7 @@ def filter_ads(ads: list, config: dict) -> tuple:
     sorted_ads = sorted(filtered_ads, key=lambda x: get_int_from_itemId(x["itemId"]), reverse=True)
 
     if not sorted_ads:
-        return []
+        return
 
     last_found_ad_id = get_int_from_itemId(sorted_ads[0]["itemId"])
     console.print(f"Last found add id for '{config["source"]}': {last_found_ad_id}")
@@ -115,15 +115,13 @@ def filter_ads(ads: list, config: dict) -> tuple:
     # don't send the adds from the first iteration
     if config["last_id"] is None:
         config["last_id"] = last_found_ad_id
-        return []
+        return
 
     config["last_id"] = last_found_ad_id
-    return sorted_ads
 
-
-def check_ads(config: dict, filtered_ads: list):
+    # send the adds
     try:
-        for car in filtered_ads:
+        for car in sorted_ads:
             bot_message = config["function_for_message"](car, config)
             send_telegram_message(BOT_TOKEN, config["chat_id"], bot_message)
     except Exception as e:
@@ -146,7 +144,8 @@ def main():
         cache_ads = {}
         for ad_config in config:
             ad_config = config[ad_config]
-            cache_key = f"{ad_config['api_link']}_{json.dumps(ad_config['query_params'], sort_keys=True)}"
+            query_params = json.dumps(ad_config['query_params'], sort_keys=True)
+            cache_key = f"{ad_config['api_link']}_{ad_config['url_numbers']}_{query_params}"
 
             if cache_key in cache_ads:
                 ads = cache_ads[cache_key]
@@ -154,8 +153,7 @@ def main():
                 ads = get_ads(urls=ad_config["urls"])
                 cache_ads[cache_key] = ads
 
-            ads = filter_ads(ads=ads, config=ad_config)
-            check_ads(config=ad_config, filtered_ads=ads)
+            send_ads(ads=ads, config=ad_config)
 
             if "start_time" not in ad_config:
                 ad_config["start_time"] = time.time()

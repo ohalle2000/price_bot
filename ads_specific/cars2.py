@@ -1,4 +1,4 @@
-from _utils import translate_to_english, calculate_driving_distance, HERENT
+from tools.utils import translate_to_english, calculate_driving_distance, HERENT
 
 
 def create_cars2_bot_message(car: dict, config: dict):

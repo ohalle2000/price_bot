@@ -8,6 +8,7 @@ CHAT_ID1 = os.getenv("CHAT_ID1")
 CHAT_ID2 = os.getenv("CHAT_ID2")
 CHAT_ID3 = os.getenv("CHAT_ID3")
 CHAT_ID4 = os.getenv("CHAT_ID4")
+CHAT_ID5 = os.getenv("CHAT_ID5")
 
 
 if not BOT_TOKEN or not CHAT_ID1:
@@ -24,3 +25,7 @@ if not CHAT_ID3:
 if not CHAT_ID4:
     print("WARNING: CHAT_ID4 is not set.")
     CHAT_ID4 = CHAT_ID1
+
+if not CHAT_ID5:
+    print("WARNING: CHAT_ID5 is not set.")
+    CHAT_ID5 = CHAT_ID1

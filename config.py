@@ -1,7 +1,8 @@
 from ads_specific.cars import create_cars_bot_message
 from ads_specific.cars2 import create_cars2_bot_message
+from ads_specific.cars3 import create_cars3_bot_message
 from ads_specific.wheels import create_basic_bot_message
-from _secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3, CHAT_ID4
+from tools.secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3, CHAT_ID4, CHAT_ID5
 
 config = {
     "cars_2dehands_1": {
@@ -16,8 +17,8 @@ config = {
         "max_distance_nijmegen": None,
         "max_distance_leuven": None,
         "query_params": {
-            "attributesById[]": "10898",
-            "attributesByKey[]": "offeredSince:Vandaag",
+            "attributesById": ["10898"],
+            "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
@@ -35,8 +36,8 @@ config = {
         "max_distance_nijmegen": None,
         "max_distance_leuven": None,
         "query_params": {
-            "attributesById[]": "10898",
-            "attributesByKey[]": "offeredSince:Vandaag",
+            "attributesById": ["10898"],
+            "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
@@ -54,8 +55,8 @@ config = {
         "max_distance_nijmegen": None,
         "max_distance_leuven": None,
         "query_params": {
-            "attributesById[]": "10898",
-            "attributesByKey[]": "offeredSince:Vandaag",
+            "attributesById": ["10898"],
+            "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
@@ -73,8 +74,8 @@ config = {
         "max_distance_nijmegen": None,
         "max_distance_leuven": None,
         "query_params": {
-            "attributesById[]": "10898",
-            "attributesByKey[]": "offeredSince:Vandaag",
+            "attributesById": ["10898"],
+            "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
@@ -120,25 +121,6 @@ config = {
             "sortOrder": "DECREASING",
         },
     },
-    "psvita_marktplaats": {
-        "source": "psvita-marktplaats",
-        "min_price": None,
-        "max_price": None,
-        "chat_id": CHAT_ID3,
-        "allowed_models": None,
-        "url_numbers": 2,
-        "function_for_message": create_basic_bot_message,
-        "api_link": "https://www.marktplaats.nl/lrp/api/search",
-        "max_distance_nijmegen": None,
-        "max_distance_leuven": None,
-        "query_params": {
-            "l1CategoryId": "356",
-            "l2CategoryId": "2895",
-            "searchInTitleAndDescription": "true",
-            "sortBy": "SORT_INDEX",
-            "sortOrder": "DECREASING",
-        },
-    },
     "cars_2dehands_3": {
         "source": "cars-2dehands3",
         "min_price": None,
@@ -151,9 +133,49 @@ config = {
         "max_distance_nijmegen": None,
         "max_distance_leuven": None,
         "query_params": {
-            "attributesById[]": "10898",
-            "attributesByKey[]": "offeredSince:Vandaag",
+            "attributesById": ["10898"],
+            "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
+            "sortBy": "SORT_INDEX",
+            "sortOrder": "DECREASING",
+        },
+    },
+    "cars_2dehands_4": {
+        "source": "cars-2dehands4",
+        "min_price": None,
+        "max_price": None,
+        "chat_id": CHAT_ID5,
+        "allowed_models": None,
+        "url_numbers": 5,
+        "function_for_message": create_cars3_bot_message,
+        "api_link": "https://www.2dehands.be/lrp/api/search",
+        "max_distance_nijmegen": None,
+        "max_distance_leuven": None,
+        "query_params": {
+            "attributesById": ["10882", "11917"],
+            "attributesByKey": ["offeredSince:Vandaag"],
+            "l1CategoryId": "91",
+            "l2CategoryId": "130",
+            "sortBy": "SORT_INDEX",
+            "sortOrder": "DECREASING",
+        },
+    },
+    "cars_marktplaats_4": {
+        "source": "cars-marktplaats4",
+        "min_price": None,
+        "max_price": None,
+        "chat_id": CHAT_ID5,
+        "allowed_models": None,
+        "url_numbers": 5,
+        "function_for_message": create_cars3_bot_message,
+        "api_link": "https://www.marktplaats.nl/lrp/api/search",
+        "max_distance_nijmegen": None,
+        "max_distance_leuven": None,
+        "query_params": {
+            "attributesById": ["10882", "11917"],
+            "attributesByKey": ["offeredSince:Vandaag"],
+            "l1CategoryId": "91",
+            "l2CategoryId": "130",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
         },

@@ -1,4 +1,4 @@
-from _utils import translate_to_english, calculate_driving_distance, NIJMEGEN, LEUVEN
+from tools.utils import translate_to_english, calculate_driving_distance, NIJMEGEN, LEUVEN
 
 
 def create_cars_bot_message(car: dict, config: dict):
