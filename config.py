@@ -46,7 +46,7 @@ config = {
     "cars_2dehands_2": {
         "source": "cars-2dehands2",
         "min_price": None,
-        "max_price": 10000,
+        "max_price": 16000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
         "url_numbers": 5,
@@ -65,7 +65,7 @@ config = {
     "cars_marktplaats_2": {
         "source": "cars-marktplaats2",
         "min_price": None,
-        "max_price": 10000,
+        "max_price": 16000,
         "chat_id": CHAT_ID2,
         "allowed_models": ["audi", "volkswagen", "seat", "skoda", "bmw", "mini", "lexus"],
         "url_numbers": 5,
