@@ -1,8 +1,7 @@
 from ads_specific.cars import create_cars_bot_message
 from ads_specific.cars2 import create_cars2_bot_message
 from ads_specific.cars3 import create_cars3_bot_message
-from ads_specific.wheels import create_basic_bot_message
-from tools.secrets import CHAT_ID1, CHAT_ID2, CHAT_ID3, CHAT_ID4, CHAT_ID5
+from tools.secrets import CHAT_ID1, CHAT_ID2, CHAT_ID4, CHAT_ID5
 
 config = {
     "cars_2dehands_1": {
@@ -77,46 +76,6 @@ config = {
             "attributesById": ["10898"],
             "attributesByKey": ["offeredSince:Vandaag"],
             "l1CategoryId": "91",
-            "sortBy": "SORT_INDEX",
-            "sortOrder": "DECREASING",
-        },
-    },
-    "wheels_marktplaats": {
-        "source": "wheels-marktplaats",
-        "min_price": None,
-        "max_price": 800,
-        "chat_id": CHAT_ID3,
-        "allowed_models": None,
-        "url_numbers": 2,
-        "function_for_message": create_basic_bot_message,
-        "api_link": "https://www.marktplaats.nl/lrp/api/search",
-        "max_distance_nijmegen": None,
-        "max_distance_leuven": None,
-        "query_params": {
-            "l1CategoryId": "2600",
-            "l2CategoryId": "65",
-            "query": "audi",
-            "searchInTitleAndDescription": "true",
-            "sortBy": "SORT_INDEX",
-            "sortOrder": "DECREASING",
-        },
-    },
-    "wheels_2dehands": {
-        "source": "wheels-2dehands",
-        "min_price": None,
-        "max_price": 800,
-        "chat_id": CHAT_ID3,
-        "allowed_models": None,
-        "url_numbers": 2,
-        "function_for_message": create_basic_bot_message,
-        "api_link": "https://www.2dehands.be/lrp/api/search",
-        "max_distance_nijmegen": None,
-        "max_distance_leuven": None,
-        "query_params": {
-            "l1CategoryId": "2600",
-            "l2CategoryId": "65",
-            "query": "audi",
-            "searchInTitleAndDescription": "true",
             "sortBy": "SORT_INDEX",
             "sortOrder": "DECREASING",
         },
